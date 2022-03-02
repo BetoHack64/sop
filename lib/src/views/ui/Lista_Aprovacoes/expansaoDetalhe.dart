@@ -68,7 +68,7 @@ class _ExpandirDetalhesState extends State<ExpandirDetalhes> {
           child: Stack(
             children: [
               Positioned(
-                bottom: 7,
+                bottom: 16,
                 child: Container(
                   //color: Colors.red,
                   padding: EdgeInsets.zero,
@@ -189,16 +189,14 @@ class _ExpandirDetalhesState extends State<ExpandirDetalhes> {
                                       color: Colors.grey,
                                     ),
                                     Container(
-                                      child: tabelaDados(),
-                                      padding: EdgeInsets.only(bottom: 25)
-                                    ),
+                                        child: tabelaDados(),
+                                        padding: EdgeInsets.only(bottom: 18)),
                                   ],
                                 )
-                              : Text(''),
+                              : Container()
                         ],
                       ),
                     ),
-                   
                     widget.detalhes.anexo.isNotEmpty == true
                         ? Container(
                             width: double.infinity,
@@ -219,44 +217,51 @@ class _ExpandirDetalhesState extends State<ExpandirDetalhes> {
                             ),
                           )
                         : Container(),
-                    Container(
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                      padding: EdgeInsets.zero,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          if (widget.detalhes.anexo.isNotEmpty)
-                            if ((widget.detalhes.anexo.length) <
-                                2) //Se tiver apenas 1 anexo
-                              for (int aux = 0;
-                                  aux <
-                                      (widget.detalhes.anexo[0].data.length) -
-                                          1;
-                                  aux++)
-                                if (widget.detalhes.anexo[0].data[aux].campo !=
-                                    'Formato')
-                                  _listaFicheiro(0, aux),
-                          if (widget.detalhes.anexo.isNotEmpty)
-                            if ((widget.detalhes.anexo.length) >= 2)
-                              for (int i = 0;
-                                  i < (widget.detalhes.anexo.length);
-                                  i++)
-                                for (int aux = 0;
-                                    aux <
-                                        (widget.detalhes.anexo[i].data.length) -
-                                            1;
-                                    aux++)
-                                  _listaFicheiro(i, aux),
-                        ],
-                      ),
-                    )
+                    widget.detalhes.anexo.isNotEmpty == true
+                        ? Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            padding: EdgeInsets.zero,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                if (widget.detalhes.anexo.isNotEmpty)
+                                  if ((widget.detalhes.anexo.length) <
+                                      2) //Se tiver apenas 1 anexo
+                                    for (int aux = 0;
+                                        aux <
+                                            (widget.detalhes.anexo[0].data
+                                                    .length) -
+                                                1;
+                                        aux++)
+                                      if (widget.detalhes.anexo[0].data[aux]
+                                              .campo !=
+                                          'Formato')
+                                        _listaFicheiro(0, aux),
+                                if (widget.detalhes.anexo.isNotEmpty)
+                                  if ((widget.detalhes.anexo.length) >= 2)
+                                    for (int i = 0;
+                                        i < (widget.detalhes.anexo.length);
+                                        i++)
+                                      for (int aux = 0;
+                                          aux <
+                                              (widget.detalhes.anexo[i].data
+                                                      .length) -
+                                                  1;
+                                          aux++)
+                                        _listaFicheiro(i, aux),
+                              ],
+                            ),
+                          )
+                        : Container()
                   ],
                 )
               : Container(),
-          SizedBox(
-            height: 20,
-          ),
+          widget.detalhes.anexo.isNotEmpty == true
+              ? SizedBox(
+                  height: 20,
+                )
+              : Container(),
         ],
       ),
     );
@@ -311,24 +316,25 @@ class _ExpandirDetalhesState extends State<ExpandirDetalhes> {
                       ),
                     ],
                   ),
-                  width: MediaQuery.of(context).size.width - 250,
-                  height: MediaQuery.of(context).size.height - 605,
+                  width: MediaQuery.of(context).size.width * 0.34,
+                  height: MediaQuery.of(context).size.height * 0.13,
                   //aqui
                   margin: EdgeInsetsDirectional.only(
-                      start: largura * 0.005, top: 10),
+                      start: largura * 0.005, top: largura * 0.04),
                   child: Image.asset(
                     'assets/images/borda.png',
-                    width: 230,
-                    height: 98,
+                    fit: BoxFit.fill,
                     //fit: BoxFit.fill,
                   ),
                 ),
-                if (i % 2 == 0) SizedBox(width: 20),
+                if (i % 2 == 0) SizedBox(width: largura * 0.06),
               ],
             ),
             Positioned(
-              top: largura * 0.05,
-              left: largura * 0.10,
+              top: largura * 0.09,
+              left: widget.detalhes.anexo[i].data[aux].valor
+                                  .toString()
+                                  .length==7? largura * 0.13: largura*0.11,
               child: Container(
                 child: Column(
                   children: [
@@ -340,9 +346,14 @@ class _ExpandirDetalhesState extends State<ExpandirDetalhes> {
                       ),
                     ),
                     AutoSizeText(
-                      widget.detalhes.anexo[i].data[aux].valor.toString().length > 8? 'Ecomenda': widget.detalhes.anexo[i].data[aux].valor,
+                      widget.detalhes.anexo[i].data[aux].valor
+                                  .toString()
+                                  .length >
+                              8
+                          ? 'Ecomenda'
+                          : widget.detalhes.anexo[i].data[aux].valor,
                       style: TextStyle(fontSize: 2),
-                      maxLines: 2,
+                      maxLines: 1,
                     ),
                   ],
                 ),
@@ -355,13 +366,42 @@ class _ExpandirDetalhesState extends State<ExpandirDetalhes> {
   }
 
   //Gera o conteudo das celulas
-  List<DataCell> getCelulas(List<dynamic> cells) =>
-      cells.map((data) => DataCell(Text('$data'))).toList();
+  List<DataCell> getCelulas(List<dynamic> cells) => cells
+      .map(
+        (data) => DataCell(
+          //Itens da tabela
+          Text(
+            data.toString().length >= 14
+                ? '$data                '
+                : (data.toString().length >= 7 && data.toString().length < 10)
+                    ? '$data            '
+                    : (data.toString().length >= 10 &&
+                            data.toString().length < 14)
+                        ? '$data     '
+                        : data,
+            
+            style: TextStyle(
+              fontSize: 16,
+              fontFamily: "SEGOEUI",
+              
+            ),
+          ),
+        ),
+      )
+      .toList();
 
   //Desenha o cabeçalho das Colunas
   List<DataColumn> getColunas(List<String> columns) => columns
       .map((String columns) => DataColumn(
-            label: Text(columns),
+            //Desenho do cabeçalho da tabela
+            label: Text(
+              columns,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                fontFamily: "SEGOEUI",
+              ),
+            ),
           ))
       .toList();
 
@@ -391,14 +431,15 @@ class _ExpandirDetalhesState extends State<ExpandirDetalhes> {
   Widget tabelaDados() {
     return Container(
       child: FittedBox(
+        fit: BoxFit.fill,
         //margin: EdgeInsets.only(right: 10, top: 10), poderia usar o FitdBox para rem o pading
         child: DataTable(
           horizontalMargin: 1,
-          
-          columnSpacing:  MediaQuery.of(context).size.width*0.02,
+
+          columnSpacing: MediaQuery.of(context).size.width * 0.02,
           columns: getColunas(columns),
           rows: tabela(),
-          dataRowHeight: MediaQuery.of(context).size.width*0.2 ,//tab  
+          dataRowHeight: MediaQuery.of(context).size.width * 0.2, //tab
         ),
       ),
     );

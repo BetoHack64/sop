@@ -164,7 +164,7 @@ class _ItemsListaState extends State<ItemsLista> {
                                           color: widget.title == 'Encomenda'
                                               ? Color(0xFFfb2436)
                                               : Color(0xFF59c369),
-                                          fontSize: largura*0.031,
+                                          fontSize: largura*0.030,
                                           fontWeight: FontWeight.bold,
                                           fontFamily: "SEGOEUI"),
                                     ),
@@ -174,7 +174,7 @@ class _ItemsListaState extends State<ItemsLista> {
                             ],
                           ),
                           margin: EdgeInsets.only(
-                            top: 55,
+                            top: largura*0.14,
                           ),
                         ),
                       ],

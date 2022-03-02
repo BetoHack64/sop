@@ -10,28 +10,31 @@ class LogoutButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: EdgeInsets.only(left: 0),
-        child: IconButton(
-            onPressed: () async {
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              prefs.clear();
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (context) {
-                    return BlocProvider<LoginBloc>(
-                      create: (_) {
-                        return LoginBloc(LoginNormalState())
-                          ..add(LoginGetConnection());
-                      },
-                      child: LoginScreem(),
-                    );
+      margin: EdgeInsets.only(left: 0),
+      child: IconButton(
+        onPressed: () async {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.clear();
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) {
+                return BlocProvider<LoginBloc>(
+                  create: (_) {
+                    return LoginBloc(LoginNormalState())
+                      ..add(LoginGetConnection());
                   },
-                ),
-              );
-            },
-            icon: Icon(
-              Icons.exit_to_app,
-              color: const Color(0xFFfd8900),
-            )));
+                  child: LoginScreem(),
+                );
+              },
+            ),
+          );
+        },
+        icon: Image.asset(
+          'assets/images/logout.PNG',
+          scale: 0.01,
+        ),
+        iconSize: 35,
+      ),
+    );
   }
 }

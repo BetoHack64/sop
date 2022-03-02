@@ -45,8 +45,9 @@ class HomeState extends State<Home> {
             'Portal de Operações',
             style: TextStyle(
               fontFamily: "SEGOEUI",
+             fontWeight: FontWeight.bold,
               color: Colors.black,
-              fontSize: largura*0.0483,
+              fontSize: largura*0.056,
             ),
             //textAlign: TextAlign.left,
           ),
@@ -56,11 +57,15 @@ class HomeState extends State<Home> {
         actions: [
           LogoutButton(),
         ],
-        leading: SvgPicture.asset(
+        leading:
+          Image.asset(
+                'assets/images/logo_app.PNG',   
+              ),
+        /* SvgPicture.asset(
           "assets/images/simbportal.svg",
           color: const Color(0xFFffb574),
-        ),
-        leadingWidth: 50,
+        ),*/
+        leadingWidth: 40,
       ),
 
       backgroundColor: Colors.white, //
