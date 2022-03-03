@@ -94,10 +94,10 @@ class _DashboardState extends State<Dashboard> {
                     sistema,
                 style: TextStyle(
                     fontSize: (BlocProvider.of<ListaOperacoesBloc>(context)
-                                .botaoHomeAparece ==
-                            true)
+                        .caixaDePesquisaEstaVisivel ==
+                    true)
                         ? 20
-                        : 20),
+                        : 17),
               ),
         actions: [
           if (BlocProvider.of<ListaOperacoesBloc>(context)
