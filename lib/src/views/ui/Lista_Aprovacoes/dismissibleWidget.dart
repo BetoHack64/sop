@@ -59,17 +59,31 @@ class _DismissibleWidgetState<T> extends State<DismissibleWidget<T>> {
                         context: context1,
                         builder: (BuildContext context) {
                           return AlertDialog(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                             title: Text(
-                              'Comentário',
+                              'Observações',
                               style: TextStyle(
                                 fontFamily: 'SEGOEUI',
+                                fontSize: 23,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                             content: TextField(
                               controller: obsController,
                               decoration: InputDecoration(
-                                labelText: 'OBS',
-                                border: OutlineInputBorder(),
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                  Radius.circular(10.0),
+                                )),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(5.0),
+                                  ),
+                                  borderSide:
+                                      BorderSide(color: Colors.blue, width: 5),
+                                ),
                                 suffixIcon: IconButton(
                                   icon: Icon(Icons.close),
                                   onPressed: () => obsController.clear(),
@@ -78,73 +92,96 @@ class _DismissibleWidgetState<T> extends State<DismissibleWidget<T>> {
                               textInputAction: TextInputAction.done,
                             ),
                             actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text(
-                                  'Cancelar',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'SEGOEUI',
-                                  ),
-                                ),
-                              ),
-                              TextButton(
-                                onPressed: () async {
-                                  SharedPreferences sharedPreferences =
-                                      await SharedPreferences.getInstance();
-
-                                  String idAccount = sharedPreferences
-                                          .getString('IdAccount') ??
-                                      'bug idAcount';
-                                  BlocProvider.of<ListaOperacoesBloc>(context1)
-                                      .acaoBotoes(
-                                          "REJECT",
-                                          obsController.text,
-                                          int.parse(widget
-                                              .item.detalhes.applicationId),
-                                          int.parse(
-                                              widget.item.detalhes.operationId),
-                                          int.parse(widget
-                                              .item.detalhes.operationCodId),
-                                          int.parse(
-                                              widget.item.detalhes.stepID),
-                                          20,
-                                          int.parse(idAccount));
-                                  List<String> lista =
-                                      sharedPreferences.getStringList(
-                                              'ListaIdOperacoesAprovadas')
-                                          as List<String>;
-                                  List<int> intLista =
-                                      lista.map((i) => int.parse(i)).toList();
-                                  intLista.add(widget.index);
-                                  lista = intLista
-                                      .map((i) => i.toString())
-                                      .toList();
-                                  sharedPreferences
-                                      .remove('ListaIdOperacoesAprovadas');
-                                  sharedPreferences.setStringList(
-                                      'ListaIdOperacoesAprovadas', lista);
-                                  BlocProvider.of<ListaOperacoesBloc>(context1)
-                                      .foundUsers
-                                      .removeAt(widget.index);
-                                  Navigator.of(context).pop();
-                                  Navigator.push(
-                                    context1,
-                                    MaterialPageRoute(
-                                      builder: (context1) => ListaAprovacoes(
-                                        nomeSistema: sistema,
+                              Container(
+                              margin: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.2),
+                                child: Row(
+                                  children: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text(
+                                        'Cancelar',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontFamily: 'SEGOEUI',
+                                        ),
                                       ),
                                     ),
-                                  );
-                                },
-                                child: Text(
-                                  'Confirmar',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'SEGOEUI',
-                                  ),
+                                    OutlinedButton(
+                                      onPressed: () async {
+                                        SharedPreferences sharedPreferences =
+                                            await SharedPreferences
+                                                .getInstance();
+
+                                        String idAccount = sharedPreferences
+                                                .getString('IdAccount') ??
+                                            'bug idAcount';
+                                        BlocProvider.of<ListaOperacoesBloc>(
+                                                context1)
+                                            .acaoBotoes(
+                                                "REJECT",
+                                                obsController.text,
+                                                int.parse(widget.item.detalhes
+                                                    .applicationId),
+                                                int.parse(widget
+                                                    .item.detalhes.operationId),
+                                                int.parse(widget.item.detalhes
+                                                    .operationCodId),
+                                                int.parse(widget
+                                                    .item.detalhes.stepID),
+                                                20,
+                                                int.parse(idAccount));
+                                        List<String> lista =
+                                            sharedPreferences.getStringList(
+                                                    'ListaIdOperacoesAprovadas')
+                                                as List<String>;
+                                        List<int> intLista = lista
+                                            .map((i) => int.parse(i))
+                                            .toList();
+                                        intLista.add(widget.index);
+                                        lista = intLista
+                                            .map((i) => i.toString())
+                                            .toList();
+                                        sharedPreferences.remove(
+                                            'ListaIdOperacoesAprovadas');
+                                        sharedPreferences.setStringList(
+                                            'ListaIdOperacoesAprovadas', lista);
+                                        BlocProvider.of<ListaOperacoesBloc>(
+                                                context1)
+                                            .foundUsers
+                                            .removeAt(widget.index);
+                                        Navigator.of(context).pop();
+                                        Navigator.push(
+                                          context1,
+                                          MaterialPageRoute(
+                                            builder: (context1) =>
+                                                ListaAprovacoes(
+                                              nomeSistema: sistema,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                Color(0xffe8912e)),
+                                        shape: MaterialStateProperty.all(
+                                            RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        )),
+                                      ),
+                                      child: const Text(
+                                        'Confirmar',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: 'SEGOEUI',
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],

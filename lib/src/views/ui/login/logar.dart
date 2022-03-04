@@ -20,10 +20,6 @@ class _LoginScreemState extends State<LoginScreem> {
   @override
   void initState() {
     super.initState();
-    lembrarNome().then((value) => setState(() {
-          nome = value;
-          print('certo : ' + nome);
-        }));
   }
 
   Future lembrarNome() async {
@@ -32,6 +28,7 @@ class _LoginScreemState extends State<LoginScreem> {
     return usuarioNomeLogin;
   }
 
+  int i = 0;
   @override
   Widget build(BuildContext context) {
     final largura = MediaQuery.of(context).size.width;
@@ -42,6 +39,16 @@ class _LoginScreemState extends State<LoginScreem> {
           future: lembrarNome(),
           builder: (context, value) {
             if (value.hasData) {
+              if (i == 0 &&
+                  BlocProvider.of<LoginBloc>(context).textFieldEstaAtivada ==
+                      false &&
+                  value.data.toString().isNotEmpty) {
+                BlocProvider.of<LoginBloc>(context).user.text =
+                    value.data.toString();
+                BlocProvider.of<LoginBloc>(context).user2 =
+                    value.data.toString();
+                i++;
+              }
               return BlocBuilder<LoginBloc, LoginState>(
                 bloc: BlocProvider.of<LoginBloc>(context),
                 builder: (context, state) {
@@ -51,6 +58,8 @@ class _LoginScreemState extends State<LoginScreem> {
                   if (state is LoginErrorState) {
                     Future.delayed(Duration(seconds: 1),
                         () => MensagemLogin.erroLogin(context));
+                    BlocProvider.of<LoginBloc>(context).textFieldEstaAtivada =
+                        false;
                   }
                   if (state is ButtonLoginPressedProcessingState) {
                     if (state.isConnected) {
@@ -67,11 +76,6 @@ class _LoginScreemState extends State<LoginScreem> {
                   }
 
                   if (state is LoginNormalState) {
-                    if (value.data.toString().isNotEmpty && BlocProvider.of<LoginBloc>(context).user.text.isEmpty) {
-                      
-                        BlocProvider.of<LoginBloc>(context).user.text =
-                            value.data.toString();
-                    }
                     return Stack(
                       children: [
                         Container(
@@ -301,58 +305,70 @@ class _LoginScreemState extends State<LoginScreem> {
                                                   ],
                                                 ),
                                                 height: 60,
-                                                child: TextField(
-                                                onTap:(){},
-                                                enabled: false,
-                                                  onChanged: (text) {
+                                                child: GestureDetector(
+                                                  onDoubleTap: () {
                                                     setState(() {
-                                                      BlocProvider.of<
-                                                                  LoginBloc>(
-                                                              context)
-                                                          .user2 = text;
+                                                      BlocProvider.of<LoginBloc>(
+                                                                  context)
+                                                              .textFieldEstaAtivada =
+                                                          true;
                                                     });
                                                   },
+                                                  child: TextField(
+                                                    enabled: BlocProvider.of<
+                                                            LoginBloc>(context)
+                                                        .textFieldEstaAtivada,
+                                                    onChanged: (text) {
+                                                      setState(() {
+                                                        BlocProvider.of<
+                                                                    LoginBloc>(
+                                                                context)
+                                                            .user2 = text;
+                                                      });
+                                                    },
 
-                                                  controller: BlocProvider.of<
-                                                          LoginBloc>(context)
-                                                      .user,
-                                                  style: TextStyle(
-                                                    color: Color(0xFF2b395b),
-                                                    fontFamily: "Ubuntu",
-                                                    fontWeight: FontWeight.w800,
-                                                    fontSize: 18,
-                                                  ),
-                                                  // obscureText: true,
-                                                  decoration: InputDecoration(
-                                                    hintText: 'Utilizador',
-                                                    border: InputBorder.none,
-                                                    contentPadding:
-                                                        EdgeInsets.only(
-                                                      top: 16.0,
-                                                      //right: 2,
+                                                    controller: BlocProvider.of<
+                                                            LoginBloc>(context)
+                                                        .user,
+                                                    style: TextStyle(
+                                                      color: Color(0xFF2b395b),
+                                                      fontFamily: "Ubuntu",
+                                                      fontWeight:
+                                                          FontWeight.w800,
+                                                      fontSize: 18,
                                                     ),
-
-                                                    prefixIcon: Container(
-                                                      width: 35,
-                                                      height: 35,
-                                                      margin:
-                                                          EdgeInsets.all(10),
-                                                      child: Material(
-                                                        color: Colors.blue,
-                                                        // elevation: 2.0,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(95),
-                                                        child: Icon(
-                                                            Icons
-                                                                .person_outline,
-                                                            color:
-                                                                Colors.white),
+                                                    // obscureText: true,
+                                                    decoration: InputDecoration(
+                                                      hintText: 'Utilizador',
+                                                      border: InputBorder.none,
+                                                      contentPadding:
+                                                          EdgeInsets.only(
+                                                        top: 16.0,
+                                                        //right: 2,
                                                       ),
-                                                    ),
 
-                                                    // hintText: 'Senha',
-                                                    //hintStyle: TextStyle(color: Color(0xFF616161)),
+                                                      prefixIcon: Container(
+                                                        width: 35,
+                                                        height: 35,
+                                                        margin:
+                                                            EdgeInsets.all(10),
+                                                        child: Material(
+                                                          color: Colors.blue,
+                                                          // elevation: 2.0,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(95),
+                                                          child: Icon(
+                                                              Icons
+                                                                  .person_outline,
+                                                              color:
+                                                                  Colors.white),
+                                                        ),
+                                                      ),
+
+                                                      // hintText: 'Senha',
+                                                      //hintStyle: TextStyle(color: Color(0xFF616161)),
+                                                    ),
                                                   ),
                                                 ),
                                               )
