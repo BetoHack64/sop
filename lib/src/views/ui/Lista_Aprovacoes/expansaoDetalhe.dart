@@ -218,41 +218,45 @@ class _ExpandirDetalhesState extends State<ExpandirDetalhes> {
                           )
                         : Container(),
                     widget.detalhes.anexo.isNotEmpty == true
-                        ? Container(
-                            margin: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
-                            padding: EdgeInsets.zero,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                if (widget.detalhes.anexo.isNotEmpty)
-                                  if ((widget.detalhes.anexo.length) <
-                                      2) //Se tiver apenas 1 anexo
-                                    for (int aux = 0;
-                                        aux <
-                                            (widget.detalhes.anexo[0].data
-                                                    .length) -
-                                                1;
-                                        aux++)
-                                      if (widget.detalhes.anexo[0].data[aux]
-                                              .campo !=
-                                          'Formato')
-                                        _listaFicheiro(0, aux),
-                                if (widget.detalhes.anexo.isNotEmpty)
-                                  if ((widget.detalhes.anexo.length) >= 2)
-                                    for (int i = 0;
-                                        i < (widget.detalhes.anexo.length);
-                                        i++)
+                        ? SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                          child: Container(
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 10),
+                              padding: EdgeInsets.zero,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  if (widget.detalhes.anexo.isNotEmpty)
+                                    if ((widget.detalhes.anexo.length) <
+                                        2) //Se tiver apenas 1 anexo
                                       for (int aux = 0;
                                           aux <
-                                              (widget.detalhes.anexo[i].data
+                                              (widget.detalhes.anexo[0].data
                                                       .length) -
                                                   1;
                                           aux++)
-                                        _listaFicheiro(i, aux),
-                              ],
+                                        if (widget.detalhes.anexo[0].data[aux]
+                                                .campo !=
+                                            'Formato')
+                                          _listaFicheiro(0, aux),
+                                  if (widget.detalhes.anexo.isNotEmpty)
+                                    if ((widget.detalhes.anexo.length) >= 2)
+                                      for (int i = 0;
+                                          i < (widget.detalhes.anexo.length);
+                                          i++)
+                                        for (int aux = 0;
+                                            aux <
+                                                (widget.detalhes.anexo[i].data
+                                                        .length) -
+                                                    1;
+                                            aux++)
+                                          _listaFicheiro(i, aux),
+                                          
+                                ],
+                              ),
                             ),
-                          )
+                        )
                         : Container()
                   ],
                 )
