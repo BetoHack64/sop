@@ -12,6 +12,7 @@ class CardDetailRepository {
     applicationId: '',
     operationCodId: '',
     operationId: '',
+    stepID: '',
     header: Header(campo: '', valor: ''),
     dados: [],
     grelha: Grelha(

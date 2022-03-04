@@ -57,7 +57,7 @@ class _DashboardState extends State<Dashboard> {
     BlocProvider.of<ListaOperacoesBloc>(context).foundUsers =
         BlocProvider.of<ListaOperacoesBloc>(context).cards;
     _controller.addListener(() {
-      bool isTop = _controller.position.pixels == 0;
+      //bool isTop = _controller.position.pixels == 0;
       double t = _controller.position.pixels;
       if (_controller.position.pixels > 0.0) {
         setState(() {
@@ -94,10 +94,10 @@ class _DashboardState extends State<Dashboard> {
                     sistema,
                 style: TextStyle(
                     fontSize: (BlocProvider.of<ListaOperacoesBloc>(context)
-                        .caixaDePesquisaEstaVisivel ==
-                    true)
+                                .caixaDePesquisaEstaVisivel ==
+                            true)
                         ? 20
-                        : 17),
+                        : 15),
               ),
         actions: [
           if (BlocProvider.of<ListaOperacoesBloc>(context)
@@ -131,16 +131,20 @@ class _DashboardState extends State<Dashboard> {
           Container(
             child: Stack(
               children: [
-                Container(
-                  color: Color(0xFFfff9f9),
-                  child: Center(
-                    child: Container(
-                      height: 40.0,
-                      width: double.infinity,
-                      alignment: Alignment(-1.0, 0.0),
-                    ),
-                  ),
-                ),
+                BlocProvider.of<ListaOperacoesBloc>(context)
+                            .caixaDePesquisaEstaVisivel ==
+                        true
+                    ? Container(
+                        color: Color(0xFFfff9f9),
+                        child: Center(
+                          child: Container(
+                            height: 40.0,
+                            width: double.infinity,
+                            alignment: Alignment(-1.0, 0.0),
+                          ),
+                        ),
+                      )
+                    : Container(),
                 if (BlocProvider.of<ListaOperacoesBloc>(context)
                         .caixaDePesquisaEstaVisivel ==
                     true)
@@ -226,7 +230,8 @@ class _DashboardState extends State<Dashboard> {
                         ),
                         margin: EdgeInsets.only(
                             bottom: 15,
-                            left: (MediaQuery.of(context).size.width / 2) * 0.001,
+                            left:
+                                (MediaQuery.of(context).size.width / 2) * 0.001,
                             top: 6),
                       ),
                     ),
@@ -254,12 +259,16 @@ class _DashboardState extends State<Dashboard> {
                               final item =
                                   BlocProvider.of<ListaOperacoesBloc>(context)
                                       .foundUsers[index];
-                              return DismissibleWidget(
-                                item: item,
-                                child: buildListTile(item, index),
-                                onDismissed: (direction) =>
-                                    dismissItem(context, index, direction),
-                              );
+                              return BlocProvider.value(
+                                  value: BlocProvider.of<ListaOperacoesBloc>(
+                                      context),
+                                  child: DismissibleWidget(
+                                    index: index,
+                                    item: item,
+                                    child: buildListTile(item, index),
+                                    onDismissed: (direction) =>
+                                        dismissItem(context, index, direction),
+                                  ));
                             },
                           )
                         : Container(

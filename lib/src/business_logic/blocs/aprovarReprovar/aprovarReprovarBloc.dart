@@ -19,6 +19,7 @@ class AprovarReprovarBloc
     applicationId: '',
     operationCodId: '',
     operationId: '',
+    stepID: '',
     header: Header(campo: '', valor: ''),
     dados: [],
     grelha: Grelha(
@@ -39,13 +40,6 @@ class AprovarReprovarBloc
       isDeviceConnected = await InternetConnectionChecker().hasConnection;
       try {
         detalhes = await teste(operationID);
-        //print('//aqui//');
-        //print(detalhes.applicationId);
-        //print('//daqui//');
-        //Construção do cabeçalho da tabela
-        
-
-        //emit(menuProcessado(listaSistemas));
       } catch (erro) {
         print('Erro lista sistemas $erro');
       }

@@ -26,6 +26,7 @@ class ListaOperacoesBloc
     applicationId: '',
     operationCodId: '',
     operationId: '',
+    stepID: '',
     header: Header(campo: '', valor: ''),
     dados: [],
     grelha: Grelha(
@@ -53,12 +54,18 @@ class ListaOperacoesBloc
           sharedPreferences.getString('SistemaID') ?? 'bug sistemaID';
       idAccount = sharedPreferences.getString('IdAccount') ?? 'bug idAcount';
       //print('idAacount = $idAccount e sistemaId = $sistemaID');
+      List<String> lista = sharedPreferences
+          .getStringList('ListaIdOperacoesAprovadas') as List<String>;
+      List<int> intLista = lista.map((i) => int.parse(i)).toList();
+
       isDeviceConnected = await InternetConnectionChecker().hasConnection;
       try {
         foundUsers = await cardDetailRepository.getOperationsPerSystem(
             sistemaID, idAccount);
+        intLista.forEach((element) {
+          foundUsers.removeAt(element);
+        });
         cards = foundUsers;
-        //emit(menuProcessado(listaSistemas));
       } catch (erro) {
         print('Erro lista sistemas $erro');
       }
@@ -80,6 +87,19 @@ class ListaOperacoesBloc
       return ListaOperacoesLoadedErrorState(
           message: "Verifique a sua coneção a internet!");
     }
+  }
+
+  acaoBotoes(
+      String stepCode,
+      String stepComment,
+      int applicationID,
+      int operationID,
+      int operationCodID,
+      int stepID,
+      int sourceID,
+      int userID) {
+    aprovarReprovarRepository.getResultadoAprovarRejeitar(stepCode, stepComment,
+        applicationID, operationID, operationCodID, stepID, sourceID, userID);
   }
 
 //----------------------- Aprova e Reprovar

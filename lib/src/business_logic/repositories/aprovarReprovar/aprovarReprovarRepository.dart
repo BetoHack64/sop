@@ -9,6 +9,7 @@ class AprovarReprovarRepository {
       applicationId: '',
       operationCodId: '',
       operationId: '',
+      stepID: '',
       header: Header(campo: '', valor: ''),
       dados: [],
       grelha: Grelha(
@@ -55,6 +56,7 @@ class AprovarReprovarRepository {
       applicationId: detalhesJSON['OperationData']['ApplicationID'],
       operationCodId: detalhesJSON['OperationData']['OperationCodID'],
       operationId: detalhesJSON['OperationData']['OperationID'].toString(),
+      stepID: detalhesJSON['OperationData']['StepID'],
       header: Header.fromJson(detalhesJSON['OperationData']['Header']),
       dados: listaData,
       grelha: grelha,
@@ -67,5 +69,20 @@ class AprovarReprovarRepository {
     final String pdfStringJSON =
         await aprovarReprovarAPI.buscaPdf(operationID, contentID);
     return pdfStringJSON;
+  }
+
+  Future<bool> getResultadoAprovarRejeitar( String stepCode,
+      String stepComment,
+      int applicationID,
+      int operationID,
+      int operationCodID,
+      int stepID,
+      int sourceID,
+      int userID) async {
+    final Map<String, dynamic> resultado =
+        await aprovarReprovarAPI.aprovarReprovarAcao(
+            stepCode, stepComment, applicationID, operationID, operationCodID, stepID, sourceID, userID);
+    print(resultado['Message'].toString());
+    return true;
   }
 }

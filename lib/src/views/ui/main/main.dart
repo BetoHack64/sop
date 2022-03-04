@@ -47,7 +47,7 @@ class HomeState extends State<Home> {
               fontFamily: "SEGOEUI",
              fontWeight: FontWeight.bold,
               color: Colors.black,
-              fontSize: largura*0.056,
+              fontSize: largura*0.045,
             ),
             //textAlign: TextAlign.left,
           ),

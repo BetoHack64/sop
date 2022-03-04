@@ -22,6 +22,7 @@ class OperationData {
   late String applicationId;
   late String operationCodId;
   late String operationId;
+  late String stepID;
   late Header header;
   late List<Data0> dados;
   late Grelha grelha;
@@ -31,6 +32,7 @@ class OperationData {
       {required this.applicationId,
       required this.operationCodId,
       required this.operationId,
+      required this.stepID,
       required this.header,
       required this.dados,
       required this.grelha,
@@ -40,12 +42,13 @@ class OperationData {
     applicationId = json["ApplicationID"];
     operationCodId = json["OperationCodID"];
     operationId = json["OperationID"];
+    stepID = json["StepID"];
     header = (json["Header"] == null ? null : Header.fromJson(json["Header"]))!;
     dados = (json["Data"] == null
         ? null
         : (json["Data"] as List).map((e) => Data0.fromJson(e)).toList())!;
     grelha = (json["Grelha"] == null ? null : Grelha.fromJson(json["Grelha"]))!;
-   // anexo = (json["Anexo"] == null ? null : Anexo.fromJson(json["Anexo"]))!;
+    // anexo = (json["Anexo"] == null ? null : Anexo.fromJson(json["Anexo"]))!;
     //Para anexos a
     anexo = (json["Anexo"] == null
         ? null

@@ -51,7 +51,8 @@ class FuncoesAPI {
       sharedPreferences.setBool("isLoggedIn", true);
       sharedPreferences.setString("usuarioNomeLogin", usuario);
       sharedPreferences.setString("usuarioSenhaLogin", password);
-
+      sharedPreferences.setStringList('ListaIdOperacoesAprovadas', []);
+      sharedPreferences.setStringList('ListaIdOperacoesReprovadas', []);
       //Redireciona para a tela Home
 
       Navigator.of(context).pushReplacement(

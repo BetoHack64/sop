@@ -49,7 +49,7 @@ class _GridDashboardState extends State<GridDashboard> {
         Flexible(
           child: GridView.count(
             childAspectRatio: 1.0,
-            padding: EdgeInsets.only(left: 30, right: 30, top: 10),
+            padding: EdgeInsets.only(left: 30, right: 30, top: 10, bottom:25),
             crossAxisCount: 2,
             crossAxisSpacing: 35,
             mainAxisSpacing: 28,
@@ -61,6 +61,8 @@ class _GridDashboardState extends State<GridDashboard> {
                           context, data.applicationCod, data.applicationID),
                   borderRadius: BorderRadius.circular(10),
                   child: Container(
+                  alignment: Alignment.center,
+                  //margin: EdgeInsets.only(bottom:(myList.lastIndexOf(data)+1==applicationDetailItems.length )? 12:myList.lastIndexOf(data)+1==applicationDetailItems.length-1?12:0),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
@@ -75,6 +77,7 @@ class _GridDashboardState extends State<GridDashboard> {
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Container(
                           decoration: BoxDecoration(
@@ -120,18 +123,20 @@ class _GridDashboardState extends State<GridDashboard> {
                           ),
                           margin: EdgeInsets.only(bottom: 0.1),
                         ),
-                        Container(
-                          child: Text(
-                            data.applicationCod,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: largura * 0.06,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: "SEGOEUI",
-                              letterSpacing: 1,
+                        Center(
+                          child: Container(
+                            child: Text(
+                              data.applicationCod,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: largura * 0.06,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: "SEGOEUI",
+                                letterSpacing: 1,
+                              ),
                             ),
+                            margin: EdgeInsets.only(bottom:  largura * 0.009),
                           ),
-                          margin: EdgeInsets.only(bottom:  largura * 0.009),
                         ),
                         Text(
                           data.applicationNameShort,
@@ -148,8 +153,10 @@ class _GridDashboardState extends State<GridDashboard> {
                 );
               },
             ).toList(),
+          
           ),
         ),
+        
       ],
     );
   }
