@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:SOP/src/business_logic/models/detalhes.dart';
 import 'package:SOP/src/views/ui/main/main.dart';
@@ -10,6 +11,7 @@ import 'package:SOP/src/business_logic/blocs/main/states/mainState.dart';
 import 'package:SOP/src/views/ui/login/mensagem.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -74,6 +76,25 @@ class FuncoesAPI {
         ),
       );
     } catch (e) {}
+  }
+
+  Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+
+    return directory.path;
+  }
+
+  Future<File> get _localFile async {
+    final path = await _localPath;
+    return File('$path/lembrarNome.txt');
+  }
+
+  writeNome(String nome) async {
+    final file = await _localFile;
+
+    // Write the file
+    file.writeAsString('$nome');
+    print(file.path);
   }
 
   //---------------------------

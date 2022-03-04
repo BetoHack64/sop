@@ -14,7 +14,10 @@ class LogoutButton extends StatelessWidget {
       child: IconButton(
         onPressed: () async {
           SharedPreferences prefs = await SharedPreferences.getInstance();
+          String? usuarioNomeLogin = prefs.getString("usuarioNomeLogin");
           prefs.clear();
+          SharedPreferences prefs2 = await SharedPreferences.getInstance();
+          prefs2.setString('usuarioNomeLogin', usuarioNomeLogin!);
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
               builder: (context) {
@@ -28,6 +31,7 @@ class LogoutButton extends StatelessWidget {
               },
             ),
           );
+          
         },
         icon: Image.asset(
           'assets/images/logout.PNG',
