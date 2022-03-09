@@ -1,7 +1,12 @@
 import 'dart:convert';
 
 import 'package:SOP/src/business_logic/blocs/listaOperacoes/listaOperacoesBloc.dart';
+import 'package:SOP/src/business_logic/blocs/main/events/mainEvent.dart';
+import 'package:SOP/src/business_logic/blocs/main/mainBloc.dart';
+import 'package:SOP/src/business_logic/blocs/main/states/mainState.dart';
+import 'package:SOP/src/views/ui/Lista_Aprovacoes/listaAprovacoes.dart';
 import 'package:SOP/src/views/ui/main/homeIconButton.dart';
+import 'package:SOP/src/views/ui/main/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_full_pdf_viewer/full_pdf_viewer_scaffold.dart';
@@ -21,6 +26,7 @@ class PdfVer extends StatefulWidget {
 }
 
 class _MyAppState extends State<PdfVer> {
+  var _isValid = false;
   String pathPDF = "";
 
   @override
@@ -59,12 +65,31 @@ class _MyAppState extends State<PdfVer> {
     super.dispose();
   }
 
+//Função para retroceder
+  Future<void> sair() async {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) {
+          return ListaAprovacoes(
+            nomeSistema: sistema,
+          );
+        },
+      ),
+    );
+  }
+
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      //appBar: AppBar(title: const Text('Exemplo ')),
-      body: Center(
-        child: Text('ola'),
+  Widget build(BuildContext context) {//Terminei aqui.
+    return WillPopScope(
+      onWillPop: () async {
+        sair(); //Função para retroceder a tela anterior
+        return false;
+      },
+      child: Scaffold(
+        //appBar: AppBar(title: const Text('Exemplo ')),
+        body: Center(
+          child: Text('Ups! Clique mais uma vez para voltar'),
+        ),
       ),
     );
   }
@@ -85,30 +110,49 @@ class _PDFScreenState extends State<PDFScreen> {
     super.dispose();
   }
 
+  //Função para retroceder
+  Future<void> sair() async {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) {
+          return ListaAprovacoes(
+            nomeSistema: sistema,
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return PDFViewerScaffold(
-        appBar: AppBar(
-          backgroundColor: Color(0xfffff9f9),
-          title: Center(
-            //margin: EdgeInsets.only(left: 10),
-            child: Text(
-              BlocProvider.of<ListaOperacoesBloc>(context)
-                  .nomeAnexo
-                  .toUpperCase(),
-              style: TextStyle(
-                fontFamily: 'SEGOEUI',
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
+    return WillPopScope(
+      onWillPop: () async {
+        sair(); //Função para retroceder a tela anterior
+        return false;
+      },
+      child: PDFViewerScaffold(
+          appBar: AppBar(
+            backgroundColor: Color(0xfffff9f9),
+            title: Center(
+              //margin: EdgeInsets.only(left: 10),
+              child: Text(
+                BlocProvider.of<ListaOperacoesBloc>(context)
+                    .nomeAnexo
+                    .toUpperCase(),
+                style: TextStyle(
+                  fontFamily: 'SEGOEUI',
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
+            leading: RetrocederButton(
+              telaRetroceder: 'anexoVer',
+              sistema: sistemaNom,
+            ),
+            actions: <Widget>[Text('       ')],
           ),
-          leading: RetrocederButton(
-            telaRetroceder: 'anexoVer',
-            sistema: sistemaNom,
-          ),
-          actions: <Widget>[Text('       ')],
-        ),
-        path: widget.pathPDF);
+          path: widget.pathPDF),
+    );
   }
 }

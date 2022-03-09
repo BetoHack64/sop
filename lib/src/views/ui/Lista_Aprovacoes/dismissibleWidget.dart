@@ -11,16 +11,16 @@ import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class DismissibleWidget<T> extends StatefulWidget {
-  final CardDetail item;
-  final Widget child;
-  final DismissDirectionCallback onDismissed;
-  final int index;
-
   const DismissibleWidget(
       {required this.index,
       required this.item,
       required this.child,
       required this.onDismissed});
+
+  final Widget child;
+  final int index;
+  final CardDetail item;
+  final DismissDirectionCallback onDismissed;
 
   @override
   State<DismissibleWidget<T>> createState() => _DismissibleWidgetState<T>();
@@ -28,10 +28,43 @@ class DismissibleWidget<T> extends StatefulWidget {
 
 class _DismissibleWidgetState<T> extends State<DismissibleWidget<T>> {
   bool temTexto = false;
+
   @override
   void initState() {
     super.initState();
   }
+
+  mensagem(BuildContext context) {}
+
+  Widget buildSwipeActionLeft() => Container(
+        alignment: Alignment.centerLeft,
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        color: Colors.green,
+        child: Icon(
+          Icons.archive_sharp,
+          color: Colors.white,
+          size: 32,
+        ),
+      );
+
+  Widget buildSwipeActionRight(BuildContext context) => Container(
+        alignment: Alignment.centerRight,
+        padding: EdgeInsetsDirectional.only(
+            end: MediaQuery.of(context).size.width - 400, top: 40),
+        color: Colors.grey[50],
+        child: Column(
+          children: [
+            ElevatedButton(
+              onPressed: () {},
+              child: Text('Aprovar'),
+            ),
+            ElevatedButton(
+              onPressed: () {},
+              child: Text('Reprovar'),
+            ),
+          ],
+        ),
+      );
 
   @override
   Widget build(BuildContext context1) {
@@ -70,30 +103,41 @@ class _DismissibleWidgetState<T> extends State<DismissibleWidget<T>> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            content: TextField(
-                              controller: obsController,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
+                            content: Container(
+                              width: 90,
+                              height: 50,
+                              child: TextField(
+                              autofocus: true,
+                              cursorColor: Colors.black,
+                                controller: obsController,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
-                                  Radius.circular(10.0),
-                                )),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(5.0),
+                                      Radius.circular(10.0),
+                                    ),
                                   ),
-                                  borderSide:
-                                      BorderSide(color: Colors.blue, width: 5),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(5.0),
+                                    ),
+                                    borderSide: BorderSide(
+                                        color: Color(0xfff9ead6), width: 4),
+                                  ),
+                                  suffixIcon: IconButton(
+                                    iconSize: 17,
+                                    color: Colors.black,
+                                    icon: Icon(Icons.close),
+                                    onPressed: () => obsController.clear(),
+                                  ),
                                 ),
-                                suffixIcon: IconButton(
-                                  icon: Icon(Icons.close),
-                                  onPressed: () => obsController.clear(),
-                                ),
+                                textInputAction: TextInputAction.done,
                               ),
-                              textInputAction: TextInputAction.done,
                             ),
                             actions: [
                               Container(
-                              margin: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.2),
+                                margin: EdgeInsets.only(
+                                    left: MediaQuery.of(context).size.width *
+                                        0.2),
                                 child: Row(
                                   children: [
                                     TextButton(
@@ -103,81 +147,97 @@ class _DismissibleWidgetState<T> extends State<DismissibleWidget<T>> {
                                       child: Text(
                                         'Cancelar',
                                         style: TextStyle(
-                                          color: Colors.black,
-                                          fontFamily: 'SEGOEUI',
-                                        ),
+                                            color: Colors.black,
+                                            fontFamily: 'SEGOEUI',
+                                            fontSize: 16),
                                       ),
                                     ),
-                                    OutlinedButton(
-                                      onPressed: () async {
-                                        SharedPreferences sharedPreferences =
-                                            await SharedPreferences
-                                                .getInstance();
+                                    Container(
+                                      margin: EdgeInsets.only(
+                                          right: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.04),
+                                      child: SizedBox(
+                                        height: 40,
+                                        child: OutlinedButton(
+                                          onPressed: () async {
+                                            SharedPreferences
+                                                sharedPreferences =
+                                                await SharedPreferences
+                                                    .getInstance();
 
-                                        String idAccount = sharedPreferences
-                                                .getString('IdAccount') ??
-                                            'bug idAcount';
-                                        BlocProvider.of<ListaOperacoesBloc>(
-                                                context1)
-                                            .acaoBotoes(
-                                                "REJECT",
-                                                obsController.text,
-                                                int.parse(widget.item.detalhes
-                                                    .applicationId),
-                                                int.parse(widget
-                                                    .item.detalhes.operationId),
-                                                int.parse(widget.item.detalhes
-                                                    .operationCodId),
-                                                int.parse(widget
-                                                    .item.detalhes.stepID),
-                                                20,
-                                                int.parse(idAccount));
-                                        List<String> lista =
-                                            sharedPreferences.getStringList(
-                                                    'ListaIdOperacoesAprovadas')
-                                                as List<String>;
-                                        List<int> intLista = lista
-                                            .map((i) => int.parse(i))
-                                            .toList();
-                                        intLista.add(widget.index);
-                                        lista = intLista
-                                            .map((i) => i.toString())
-                                            .toList();
-                                        sharedPreferences.remove(
-                                            'ListaIdOperacoesAprovadas');
-                                        sharedPreferences.setStringList(
-                                            'ListaIdOperacoesAprovadas', lista);
-                                        BlocProvider.of<ListaOperacoesBloc>(
-                                                context1)
-                                            .foundUsers
-                                            .removeAt(widget.index);
-                                        Navigator.of(context).pop();
-                                        Navigator.push(
-                                          context1,
-                                          MaterialPageRoute(
-                                            builder: (context1) =>
-                                                ListaAprovacoes(
-                                              nomeSistema: sistema,
-                                            ),
+                                            String idAccount = sharedPreferences
+                                                    .getString('IdAccount') ??
+                                                'bug idAcount';
+                                            BlocProvider.of<ListaOperacoesBloc>(
+                                                    context1)
+                                                .acaoBotoes(
+                                                    "REJECT",
+                                                    obsController.text,
+                                                    int.parse(widget
+                                                        .item
+                                                        .detalhes
+                                                        .applicationId),
+                                                    int.parse(widget.item
+                                                        .detalhes.operationId),
+                                                    int.parse(widget
+                                                        .item
+                                                        .detalhes
+                                                        .operationCodId),
+                                                    int.parse(widget
+                                                        .item.detalhes.stepID),
+                                                    20,
+                                                    int.parse(idAccount));
+                                            List<String> lista =
+                                                sharedPreferences.getStringList(
+                                                        'ListaIdOperacoesAprovadas')
+                                                    as List<String>;
+                                            List<int> intLista = lista
+                                                .map((i) => int.parse(i))
+                                                .toList();
+                                            intLista.add(widget.index);
+                                            lista = intLista
+                                                .map((i) => i.toString())
+                                                .toList();
+                                            sharedPreferences.remove(
+                                                'ListaIdOperacoesAprovadas');
+                                            sharedPreferences.setStringList(
+                                                'ListaIdOperacoesAprovadas',
+                                                lista);
+                                            BlocProvider.of<ListaOperacoesBloc>(
+                                                    context1)
+                                                .foundUsers
+                                                .removeAt(widget.index);
+                                            Navigator.of(context).pop();
+                                            Navigator.push(
+                                              context1,
+                                              MaterialPageRoute(
+                                                builder: (context1) =>
+                                                    ListaAprovacoes(
+                                                  nomeSistema: sistema,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all(
+                                                    Color(0xffe8912e)),
+                                            shape: MaterialStateProperty.all(
+                                                RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
+                                            )),
                                           ),
-                                        );
-                                      },
-                                      style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all(
-                                                Color(0xffe8912e)),
-                                        shape: MaterialStateProperty.all(
-                                            RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                        )),
-                                      ),
-                                      child: const Text(
-                                        'Confirmar',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: 'SEGOEUI',
-                                          fontWeight: FontWeight.bold,
+                                          child: const Text(
+                                            'Confirmar',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontFamily: 'SEGOEUI',
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 17),
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -267,36 +327,4 @@ class _DismissibleWidgetState<T> extends State<DismissibleWidget<T>> {
         // component is not dragged.
         child: widget.child);
   }
-
-  mensagem(BuildContext context) {}
-
-  Widget buildSwipeActionLeft() => Container(
-        alignment: Alignment.centerLeft,
-        padding: EdgeInsets.symmetric(horizontal: 20),
-        color: Colors.green,
-        child: Icon(
-          Icons.archive_sharp,
-          color: Colors.white,
-          size: 32,
-        ),
-      );
-
-  Widget buildSwipeActionRight(BuildContext context) => Container(
-        alignment: Alignment.centerRight,
-        padding: EdgeInsetsDirectional.only(
-            end: MediaQuery.of(context).size.width - 400, top: 40),
-        color: Colors.grey[50],
-        child: Column(
-          children: [
-            ElevatedButton(
-              onPressed: () {},
-              child: Text('Aprovar'),
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              child: Text('Reprovar'),
-            ),
-          ],
-        ),
-      );
 }
