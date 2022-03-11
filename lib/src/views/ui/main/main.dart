@@ -5,9 +5,9 @@ import 'package:SOP/src/views/ui/main/logout.dart';
 import 'package:flutter/material.dart';
 import 'package:SOP/src/views/ui/main/dashboard.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 
 void main() {
+  
   runApp(
     Builder(builder: (context) {
       return MaterialApp(
@@ -35,7 +35,7 @@ class HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-     final largura = MediaQuery.of(context).size.width;
+    final largura = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
@@ -45,9 +45,9 @@ class HomeState extends State<Home> {
             'Portal de Operações',
             style: TextStyle(
               fontFamily: "SEGOEUI",
-             fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.bold,
               color: Colors.black,
-              fontSize: largura*0.045,
+              fontSize: largura * 0.045,
             ),
             //textAlign: TextAlign.left,
           ),
@@ -57,10 +57,9 @@ class HomeState extends State<Home> {
         actions: [
           LogoutButton(),
         ],
-        leading:
-          Image.asset(
-                'assets/images/logo_app.PNG',   
-              ),
+        leading: Image.asset(
+          'assets/images/logo_app.PNG',
+        ),
         /* SvgPicture.asset(
           "assets/images/simbportal.svg",
           color: const Color(0xFFffb574),

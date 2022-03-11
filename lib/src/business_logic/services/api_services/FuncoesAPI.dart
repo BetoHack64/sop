@@ -78,25 +78,6 @@ class FuncoesAPI {
     } catch (e) {}
   }
 
-  Future<String> get _localPath async {
-    final directory = await getApplicationDocumentsDirectory();
-
-    return directory.path;
-  }
-
-  Future<File> get _localFile async {
-    final path = await _localPath;
-    return File('$path/lembrarNome.txt');
-  }
-
-  writeNome(String nome) async {
-    final file = await _localFile;
-
-    // Write the file
-    file.writeAsString('$nome');
-    print(file.path);
-  }
-
   //---------------------------
   //Pega os dados do user
   contaUsuario(String usuario, String password, TextEditingController user,

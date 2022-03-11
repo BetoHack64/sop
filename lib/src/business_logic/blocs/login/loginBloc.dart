@@ -9,6 +9,8 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   bool isDeviceConnected = false;
   bool textFieldEstaAtivada = false;
+  bool textFieldSenhaEstaAtivada = false;
+  bool temSenha = false;
   TextEditingController user = TextEditingController();
   TextEditingController pass = TextEditingController();
   late String user2 = "", pass2 = "";

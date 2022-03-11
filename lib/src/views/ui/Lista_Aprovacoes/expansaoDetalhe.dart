@@ -81,21 +81,37 @@ class _ExpandirDetalhesState extends State<ExpandirDetalhes> {
                     child: Row(
                       //mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        IconButton(
-                          splashColor: Colors.white,
-                          splashRadius: 15,
-                          padding: EdgeInsets.zero,
-                          iconSize: 35,
-                          onPressed: () {
-                            setState(() {});
-                          },
-                          icon: Icon(
-                            Icons.keyboard_arrow_right,
-                            color: Colors.black,
+                        estaExpandido == false
+                            ? IconButton(
+                                splashColor: Colors.white,
+                                splashRadius: 15,
+                                padding: EdgeInsets.zero,
+                                iconSize: 35,
+                                onPressed: () {
+                                  setState(() {});
+                                },
+                                icon: Icon(
+                                  Icons.keyboard_arrow_right,
+                                  color: Colors.black,
 
-                            //size: 30.0,
-                          ),
-                        ),
+                                  //size: 30.0,
+                                ),
+                              )
+                            : IconButton(
+                                splashColor: Colors.white,
+                                splashRadius: 15,
+                                padding: EdgeInsets.zero,
+                                iconSize: 35,
+                                onPressed: () {
+                                  setState(() {});
+                                },
+                                icon: Icon(
+                                  Icons.keyboard_arrow_left,
+                                  color: Colors.black,
+
+                                  //size: 30.0,
+                                ),
+                              ),
                       ],
                     ),
                   ),
@@ -219,8 +235,8 @@ class _ExpandirDetalhesState extends State<ExpandirDetalhes> {
                         : Container(),
                     widget.detalhes.anexo.isNotEmpty == true
                         ? SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                          child: Container(
+                            scrollDirection: Axis.horizontal,
+                            child: Container(
                               margin: EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 10),
                               padding: EdgeInsets.zero,
@@ -252,11 +268,10 @@ class _ExpandirDetalhesState extends State<ExpandirDetalhes> {
                                                     1;
                                             aux++)
                                           _listaFicheiro(i, aux),
-                                          
                                 ],
                               ),
                             ),
-                        )
+                          )
                         : Container()
                   ],
                 )
@@ -336,9 +351,11 @@ class _ExpandirDetalhesState extends State<ExpandirDetalhes> {
             ),
             Positioned(
               top: largura * 0.09,
-              left: widget.detalhes.anexo[i].data[aux].valor
-                                  .toString()
-                                  .length==7? largura * 0.13: largura*0.11,
+              left:
+                  widget.detalhes.anexo[i].data[aux].valor.toString().length ==
+                          7
+                      ? largura * 0.13
+                      : largura * 0.11,
               child: Container(
                 child: Column(
                   children: [
@@ -383,11 +400,9 @@ class _ExpandirDetalhesState extends State<ExpandirDetalhes> {
                             data.toString().length < 14)
                         ? '$data     '
                         : data,
-            
             style: TextStyle(
               fontSize: 16,
               fontFamily: "SEGOEUI",
-              
             ),
           ),
         ),

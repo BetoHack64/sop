@@ -3,13 +3,17 @@ import 'package:SOP/src/business_logic/blocs/login/loginBloc.dart';
 import 'package:SOP/src/business_logic/blocs/login/states/loginState.dart';
 import 'package:SOP/src/views/ui/Login/logar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 // Função Raiz da App, que define a tela principal
 void main() {
-  runApp(
-    MyApp(),
-  );
+  WidgetsFlutterBinding
+      .ensureInitialized(); //Forçar o modo retrato para Aplicação Inteira
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) {
+    runApp(MyApp());
+  });
 }
 
 class MyApp extends StatefulWidget {

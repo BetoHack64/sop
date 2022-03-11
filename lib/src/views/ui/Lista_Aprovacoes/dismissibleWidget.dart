@@ -1,14 +1,10 @@
-import 'package:SOP/src/business_logic/blocs/listaOperacoes/events/listaOperacoesEvent.dart';
 import 'package:SOP/src/business_logic/blocs/listaOperacoes/listaOperacoesBloc.dart';
-import 'package:SOP/src/business_logic/blocs/listaOperacoes/states/listaOperacoesState.dart';
 import 'package:SOP/src/business_logic/models/cardDetail.dart';
 import 'package:SOP/src/views/ui/Lista_Aprovacoes/listaAprovacoes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:top_snackbar_flutter/custom_snack_bar.dart';
-import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class DismissibleWidget<T> extends StatefulWidget {
   const DismissibleWidget(
@@ -34,42 +30,16 @@ class _DismissibleWidgetState<T> extends State<DismissibleWidget<T>> {
     super.initState();
   }
 
-  mensagem(BuildContext context) {}
-
-  Widget buildSwipeActionLeft() => Container(
-        alignment: Alignment.centerLeft,
-        padding: EdgeInsets.symmetric(horizontal: 20),
-        color: Colors.green,
-        child: Icon(
-          Icons.archive_sharp,
-          color: Colors.white,
-          size: 32,
-        ),
-      );
-
-  Widget buildSwipeActionRight(BuildContext context) => Container(
-        alignment: Alignment.centerRight,
-        padding: EdgeInsetsDirectional.only(
-            end: MediaQuery.of(context).size.width - 400, top: 40),
-        color: Colors.grey[50],
-        child: Column(
-          children: [
-            ElevatedButton(
-              onPressed: () {},
-              child: Text('Aprovar'),
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              child: Text('Reprovar'),
-            ),
-          ],
-        ),
-      );
-
   @override
   Widget build(BuildContext context1) {
-    return Slidable(
-
+    bool clique = false;
+    return GestureDetector(
+      onHorizontalDragUpdate: (details) {
+        if (details.delta.direction > 0) {
+          print('okk');
+        }
+      },
+      child: Slidable(
         // Specify a key if the Slidable is dismissible.
         key: ValueKey<CardDetail>(widget.item),
 
@@ -107,8 +77,8 @@ class _DismissibleWidgetState<T> extends State<DismissibleWidget<T>> {
                               width: 90,
                               height: 50,
                               child: TextField(
-                              autofocus: true,
-                              cursorColor: Colors.black,
+                                autofocus: true,
+                                cursorColor: Colors.black,
                                 controller: obsController,
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(
@@ -121,7 +91,8 @@ class _DismissibleWidgetState<T> extends State<DismissibleWidget<T>> {
                                       Radius.circular(5.0),
                                     ),
                                     borderSide: BorderSide(
-                                        color: Color(0xfff9ead6), width: 4),
+                                        color: Color(0xfff9ead6),
+                                        width: 4),
                                   ),
                                   suffixIcon: IconButton(
                                     iconSize: 17,
@@ -135,10 +106,10 @@ class _DismissibleWidgetState<T> extends State<DismissibleWidget<T>> {
                             ),
                             actions: [
                               Container(
-                                margin: EdgeInsets.only(
-                                    left: MediaQuery.of(context).size.width *
-                                        0.2),
+                                //margin: EdgeInsets.only(
+                                //    right: MediaQuery.of(context).size.width),
                                 child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     TextButton(
                                       onPressed: () {
@@ -157,68 +128,72 @@ class _DismissibleWidgetState<T> extends State<DismissibleWidget<T>> {
                                           right: MediaQuery.of(context)
                                                   .size
                                                   .width *
-                                              0.04),
+                                              0.02),
                                       child: SizedBox(
                                         height: 40,
                                         child: OutlinedButton(
                                           onPressed: () async {
-                                            SharedPreferences
-                                                sharedPreferences =
-                                                await SharedPreferences
-                                                    .getInstance();
+                                            if (obsController.text.isNotEmpty) {
+                                              SharedPreferences
+                                                  sharedPreferences =
+                                                  await SharedPreferences
+                                                      .getInstance();
 
-                                            String idAccount = sharedPreferences
-                                                    .getString('IdAccount') ??
-                                                'bug idAcount';
-                                            BlocProvider.of<ListaOperacoesBloc>(
-                                                    context1)
-                                                .acaoBotoes(
-                                                    "REJECT",
-                                                    obsController.text,
-                                                    int.parse(widget
-                                                        .item
-                                                        .detalhes
-                                                        .applicationId),
-                                                    int.parse(widget.item
-                                                        .detalhes.operationId),
-                                                    int.parse(widget
-                                                        .item
-                                                        .detalhes
-                                                        .operationCodId),
-                                                    int.parse(widget
-                                                        .item.detalhes.stepID),
-                                                    20,
-                                                    int.parse(idAccount));
-                                            List<String> lista =
-                                                sharedPreferences.getStringList(
-                                                        'ListaIdOperacoesAprovadas')
-                                                    as List<String>;
-                                            List<int> intLista = lista
-                                                .map((i) => int.parse(i))
-                                                .toList();
-                                            intLista.add(widget.index);
-                                            lista = intLista
-                                                .map((i) => i.toString())
-                                                .toList();
-                                            sharedPreferences.remove(
-                                                'ListaIdOperacoesAprovadas');
-                                            sharedPreferences.setStringList(
-                                                'ListaIdOperacoesAprovadas',
-                                                lista);
-                                            BlocProvider.of<ListaOperacoesBloc>(
-                                                    context1)
-                                                .foundUsers
-                                                .removeAt(widget.index);
-                                            Navigator.of(context).pop();
-                                            Navigator.push(
-                                              context1,
-                                              MaterialPageRoute(
-                                                builder: (context1) =>
-                                                    ListaAprovacoes(
-                                                  nomeSistema: sistema,
+                                              String idAccount =
+                                                  sharedPreferences.getString(
+                                                          'IdAccount') ??
+                                                      'bug idAcount';
+                                              BlocProvider.of<
+                                                          ListaOperacoesBloc>(
+                                                      context1)
+                                                  .acaoBotoes(
+                                                      "REJECT",
+                                                      obsController.text,
+                                                      int.parse(
+                                                          widget.item.detalhes
+                                                              .applicationId),
+                                                      int.parse(widget.item
+                                                          .detalhes.operationId),
+                                                      int.parse(widget
+                                                          .item
+                                                          .detalhes
+                                                          .operationCodId),
+                                                      int.parse(widget.item
+                                                          .detalhes.stepID),
+                                                      20,
+                                                      int.parse(idAccount));
+                                              List<String> lista =
+                                                  sharedPreferences.getStringList(
+                                                          'ListaIdOperacoesAprovadas')
+                                                      as List<String>;
+                                              List<int> intLista = lista
+                                                  .map((i) => int.parse(i))
+                                                  .toList();
+                                              intLista.add(widget.index);
+                                              lista = intLista
+                                                  .map((i) => i.toString())
+                                                  .toList();
+                                              sharedPreferences.remove(
+                                                  'ListaIdOperacoesAprovadas');
+                                              sharedPreferences.setStringList(
+                                                  'ListaIdOperacoesAprovadas',
+                                                  lista);
+                                              BlocProvider.of<
+                                                          ListaOperacoesBloc>(
+                                                      context1)
+                                                  .foundUsers
+                                                  .removeAt(widget.index);
+                                              Navigator.of(context).pop();
+                                              Navigator.push(
+                                                context1,
+                                                MaterialPageRoute(
+                                                  builder: (context1) =>
+                                                      ListaAprovacoes(
+                                                    nomeSistema: sistema,
+                                                  ),
                                                 ),
-                                              ),
-                                            );
+                                              );
+                                            } 
                                           },
                                           style: ButtonStyle(
                                             backgroundColor:
@@ -325,6 +300,8 @@ class _DismissibleWidgetState<T> extends State<DismissibleWidget<T>> {
 
         // The child of the Slidable is what the user sees when the
         // component is not dragged.
-        child: widget.child);
+        child: widget.child,
+      ),
+    );
   }
 }

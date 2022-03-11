@@ -15,6 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ListaOperacoesBloc
     extends Bloc<ListaOperacoesEvent, ListaOperacoesState> {
   bool botaoHomeAparece = true;
+  bool foiDeslizado = false;
   bool caixaDePesquisaEstaVisivel = true;
   String ficheiroString = "";
   String nomeAnexo = "";
