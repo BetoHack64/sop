@@ -1,9 +1,16 @@
-# Opeca App - Aplicação de Operações Cambiais
+# SOP
 
-ToBe
+Este projeto é um ponto de partida para uma aplicação de gestão de operações cambiais.
 
-## Detalhes
-
-Este projeto é um ponto de partida para uma aplicação de gestão de operações cambiais, desenvolvida em Flutter (Dart).
+## Tecnologias
 
 
+
+As tecnologias utilizadas neste app são:
+
+- Flutter (Framework)
+- Dart (Linguagem)
+- Bloc (Gestão de Estados)
+
+
+<img src="Version2.png" width="1000"/>
